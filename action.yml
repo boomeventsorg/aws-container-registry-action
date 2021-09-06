@@ -1,4 +1,5 @@
 name: 'AWS Elastic Container Registry auth and configuration'
+description: 'GitHub action used for easier AWS Elastic Container Registry configuration and authentication'
 inputs:
   awsAccessKeyId:
     description: 'AWS Access key ID with required access to ECR'
