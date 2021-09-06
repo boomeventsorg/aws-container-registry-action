@@ -1,0 +1,32 @@
+name: 'AWS Elastic Container Registry auth and configuration'
+inputs:
+  awsAccessKeyId:
+    description: 'AWS Access key ID with required access to ECR'
+    required: true
+  awsSecretAccessKey:
+    description: 'AWS Secret Access key with required access to ECR'
+    required: true    
+  awsRegion:
+    description: 'AWS region where is ECR placed'
+    required: true    
+outputs:
+  awsRegistry:
+    description: "AWS ECR address used for Docker push"
+    value: ${{ steps.aws-login.outputs.registry }}
+runs:
+  using: "composite"
+  steps:
+
+    # Initial AWS client configuration
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      id: aws-configuration
+      with:
+        aws-access-key-id: ${{ inputs.awsAccessKeyId }}
+        aws-secret-access-key: ${{ inputs.awsSecretAccessKey }}
+        aws-region: ${{ inputs.awsRegion }}
+
+    # Process secured Docker login
+    - name: Login to Elastic Container Registry
+      id: aws-login
+      uses: aws-actions/amazon-ecr-login@v1
